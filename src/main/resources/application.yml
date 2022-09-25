@@ -12,10 +12,10 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 
 # TODO :: mariaDB 설치 이후 URL 및 user 설정
-#spring:
-#  profiles:
-#    include:
-#      - db
+spring:
+  profiles:
+    include:
+      - db
 
   jpa:
     defer-datasource-initialization: true
