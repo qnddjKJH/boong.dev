@@ -1,11 +1,14 @@
 package dev.boong.blog.domain.member;
 
 import dev.boong.blog.config.jpa.auditing.BaseTimeEntity;
+import dev.boong.blog.domain.article.Article;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -20,6 +23,7 @@ import java.util.Objects;
 public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
     private Long id;
     @Column(nullable = false, length = 30)
     private String name;
@@ -31,6 +35,9 @@ public class Member extends BaseTimeEntity {
     private String memberPassword;
     @Column(length = 50)
     private String email;
+
+    @OneToMany(mappedBy = "member")
+    List<Article> articles = new ArrayList<>();
 
     private Member(String name, String birth, String memberName, String memberPassword, String email) {
         this.name = name;

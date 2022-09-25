@@ -8,26 +8,47 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(indexes = {
-        @Index(columnList = "title"),
-        @Index(columnList = "content"),
-        @Index(columnList = "member"),
+        @Index(columnList = "comment"),
+        @Index(columnList = "member_id"),
 })
 @Entity
 public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "comment_id")
     private Long id;
+    @Column(nullable = false, length = 500)
     private String comment;
+    @ManyToOne
+    @JoinColumn(name = "article_id")
     private Article article;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
     private Member member;
 
-    public Comment(String comment, Article article, Member member) {
+    private Comment(String comment) {
         this.comment = comment;
-        this.article = article;
-        this.member = member;
+    }
+
+    public static Comment of(String comment) {
+        return new Comment(comment);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Comment comment)) return false;
+        return id != null && id.equals(comment.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
